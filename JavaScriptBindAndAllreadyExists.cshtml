@@ -1,0 +1,319 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Brand Details</h2>
+              
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <div class="form-horizontal form-label-left input_mask">
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label"> Name</label>
+                        <div class="col-sm-7" id="">
+                            <input id="txtName" type="text" maxlength="100" placeholder="Name" required="" class="form-control form-control-success">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Details</label>
+                        <div class="col-sm-7" id="">
+                            <input id="txtDetails" type="text" maxlength="100" placeholder="Details" required="" class="form-control form-control-success">
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Address</label>
+                        <div class="col-sm-7" id="">
+                            <input id="txtAddress" type="text" maxlength="100" placeholder="Address" required="" class="form-control form-control-success">
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Mobile Number</label>
+                        <div class="col-sm-7" id="">
+                            <input id="txtNumber" type="number" maxlength="100" placeholder="Code" required="" class="form-control form-control-success">
+
+
+                        </div>
+
+                    </div>
+
+                 
+
+
+
+                   
+
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+
+                          
+                            <input type="button" id="btnAdd" value="Add" class="btn btn-success">
+                            @*<input type="button" id="btnUpdate" value="Up" class="btn btn-success">*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Brand table Information</h2>
+                <table class="table" id="tblBrandDetails" style=" ">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Details</th>
+                            <th>Address</th>
+                            <th>Mobile Number</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                    
+
+                        </tr>
+                    </thead>
+
+                    <tbody class="tbody" style="color: black"></tbody>
+
+
+                </table>
+            </div>
+         
+                <div class="col-sm-12">
+
+
+                    <input type="button" id="btnSave" value="Save" class="btn btn-success">
+
+                </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<link href="~/Plugins/vendors/Datatables/jquery.dataTables-1.10.9.css" rel="stylesheet" />
+<script src="~/Plugins/vendors/jquery/dist/jquery.min.js"></script>
+<script src="~/Plugins/vendors/Datatables/jquery.dataTable-1.10.9.min.js"></script>
+
+
+<script>
+
+    
+
+
+    $("#btnAdd").click(function () {
+        debugger;
+
+        var name = $("#txtName").val();
+        var details = $("#txtDetails").val();
+        var address = $("#txtAddress").val();
+        var number = $("#txtNumber").val();
+
+       
+        //Table Bind raw JavaScript.........................................
+
+        var isExists = false;
+        $('#tblBrandDetails tbody').find("tr").each(function(row, tr) {
+            if (($(tr).find('td:eq(0)').text() == name) || ($(tr).find('td:eq(1)').text() == details)) {
+                isExists = true;
+                return false;
+            }
+
+        });
+        
+        if (!isExists)
+        {
+        var table = document.getElementById("tblBrandDetails").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.length);
+        
+        var cell1 = newRow.insertCell(0);
+        cell1.innerHTML = name;
+
+        var cell2 = newRow.insertCell(1);
+        cell2.innerHTML = details;
+        
+        var cell3 = newRow.insertCell(2);
+        cell3.innerHTML = address;
+        
+        var cell4 = newRow.insertCell(3);
+        cell4.innerHTML = number;
+        
+        var cell5 = newRow.insertCell(4);
+        cell5.innerHTML = '<button class="btn btn-primary" onClick="onEdit(this)">Edit</button>';
+        
+        var cell6 = newRow.insertCell(5);
+        cell6.innerHTML = '<button class= "btn btn-danger" onClick="onDelete(this)" >Delete</button>';
+        
+
+        //Table Bind jquery...............................................
+
+        //var row = "<tr>" +
+        //    "<td>" + name + "<td>" +
+        //     details + "<td>"+
+        //     address + "<td>"+
+        //     number + "<td>" +
+        //    '<button class="btn btn-primary" id="edit" onClick="onEdit(this)">Edit</button>' + "<td>" +
+        //    '<button class="btn btn-danger" onClick="onDelete(this)">Delete</button>' +"<td>"
+            
+        //+ "</tr>";
+
+        //$('#tblBrandDetails tbody').append(row);
+        
+
+        
+        //Table bind Using datatable.....................
+        //var table;
+        //table.destroy();
+        //var dataSet = [[$("#txtName").val(), $("#txtDetails").val(), $("#txtAddress").val(), $("#txtNumber").val()]];
+        // var dataSet = [
+        //[ "Tiger Nixon", "System Architect", "Edinburgh", "5421"],
+        //["Garrett Winters", "Accountant", "Tokyo", "8422"]
+        //];
+        //console.log(dataSet);
+
+        //debugger;
+        //{
+        //    $('#tblBrandDetails').DataTable({
+        //        data: dataSet,
+        //        //'destroy': true,
+        //        //'paging': true,
+        //        //'lengthChange': true,
+        //        //'searching': true,
+        //        //'ordering': true,
+        //        //'info': true,
+        //        //'autoWidth': true,
+        //        "destroy": true,
+               
+               
+              
+                //"dom": 'Bfrtip',
+
+            
+           // columns: [
+           //     { title: "Name"},
+           //     { title: "Details" },
+           //     { title: "Address" },
+           //     { title: "Number" },
+           //     { title: "Edit", "defaultContent": "<button Class='btn btn-primary' onClick='onEdit(this)'>Edit</button>" },
+           //     { title: "Delete", "defaultContent": "<button Class='btn btn-danger' onClick='onDelete(this)'>Delete</button>" }
+           // ]
+               
+           //});
+           //    }
+        clear();
+        } else {            
+
+
+            alert("AlReady Remain");
+
+
+        }
+    });
+
+
+    //$('#tblBrandDetails').on('click', '#edit', function onEdit(td) {
+        function onEdit(td) {
+        debugger;
+        row = td.parentElement.parentElement;
+        console.log(row);
+        var c = $("#txtName").val(row.cells[0].innerHTML);
+        var d = $("#txtDetails").val(row.cells[1].innerHTML);
+        var e = $("#txtAddress").val(row.cells[2].innerHTML);
+        var f = $("#txtNumber").val(row.cells[3].innerHTML);
+        //$("#txtName").val = row.cells[0].innerHTML;
+        //console.log(c);
+        //console.log(d);
+        //console.log(e);
+        //console.log(f);        
+        
+}
+    //});
+
+   
+    function onDelete(td) {
+        debugger;
+       if( confirm("Are You Sure?")){
+        row = td.parentElement.parentElement;
+        document.getElementById("tblBrandDetails").deleteRow(row.rowIndex);
+       }
+    }
+
+    
+
+    function clear() {
+        $("#txtName").val('');
+        $("#txtDetails").val('');
+        $("#txtAddress").val('');
+        $('#txtNumber').val('');
+    }
+
+    $("#btnSave").click(function () {
+        debugger;
+        var dataInfo = [];
+        //var table = $('#tblBrandDetails tbody');
+        $('#tblBrandDetails tbody').find("tr").each(function (row,tr) {
+            dataInfo.push({
+                
+                Name: $(tr).find('td:eq(0)').text(),
+                Details: $(tr).find('td:eq(1)').text(),
+                Address: $(tr).find('td:eq(2)').text(),
+                Number: $(tr).find('td:eq(3)').text()
+                
+            });
+       
+        });
+        console.log(dataInfo);
+        debugger;
+        $.ajax({
+            url:'@Url.Action("InsertData","BrandOutletTestController")',
+            type: 'Post',
+            data: JSON.stringify({ dataInfo: dataInfo }),
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success:function() {
+                alert("Data saved Successfully");
+            }
+        });
+
+
+    });
+    
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
